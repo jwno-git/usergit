@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Wofi-SSH
+Exec=.local/bin/wofi-ssh.sh 
+Terminal=false
+Type=Application
+GenericName=WofiSSH
+Categories=Utility;

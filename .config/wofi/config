@@ -1,0 +1,9 @@
+[wofi]
+term=foot
+width=20%
+height=25%
+location=center
+allow-markup=true
+prompt=
+insensitive=true
+
