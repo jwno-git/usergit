@@ -1,3 +1,2 @@
 #!/bin/bash
-terminator -x bash -c "nvim \"$1\"; exec bash"
-
+foot --app-id=edit --title="Editing: $1" bash -c "nvim \"$1\""
