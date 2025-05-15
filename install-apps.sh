@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# Script to install essential applications via apt
-
 set -e
 
-echo "Updating package list..."
+echo "=== Updating APT package list ==="
 sudo apt update
 
-echo "Installing user applications..."
+echo "=== Installing APT packages ==="
 sudo apt install -y \
   android-sdk-platform-tools \
   brightnessctl \
@@ -16,7 +14,6 @@ sudo apt install -y \
   cliphist \
   curl \
   dunst \
-  flatpak \
   fonts-font-awesome \
   fonts-terminus \
   foot \
@@ -45,7 +42,7 @@ sudo apt install -y \
   xdg-desktop-portal-wlr \
   zip
 
-echo "Installing development packages with --no-install-recommends..."
+echo "=== Installing APT dev packages (no recommends) ==="
 sudo apt install -y --no-install-recommends \
   blueman \
   build-essential \
@@ -71,4 +68,40 @@ sudo apt install -y --no-install-recommends \
   pkg-config \
   wayland-protocols
 
-echo "All packages installed successfully."
+echo "=== Ensuring Flatpak and Flathub are set up ==="
+sudo apt install -y flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+echo "=== Installing Flatpak applications ==="
+flatpak install -y flathub \
+  com.obsproject.Studio \
+  org.kde.kdenlive \
+  net.cozic.joplin_desktop \
+  org.libreoffice.LibreOffice \
+  org.gnome.eog \
+  com.bitwarden.desktop \
+  com.saivert.pwvucontrol \
+  org.mozilla.firefox \
+  org.gimp.GIMP \
+  net.ankiweb.Anki \
+  io.mpv.Mpv \
+  org.gnome.Calculator \
+  org.standardnotes.standardnotes
+
+echo "=== Setting global Flatpak overrides ==="
+sudo flatpak override --filesystem=$HOME/.themes
+sudo flatpak override --filesystem=$HOME/.icons
+sudo flatpak override --env=GTK_THEME=Nordic-darker
+sudo flatpak override --env=XCURSOR_THEME=RosePine
+sudo flatpak override --env=XCURSOR_SIZE=32
+
+echo "=== Setting app-specific override for OBS Studio ==="
+flatpak override com.obsproject.Studio --user \
+  --filesystem=home \
+  --socket=wayland \
+  --socket=pulseaudio \
+  --filesystem=xdg-run/pipewire-0 \
+  --talk-name=org.freedesktop.portal.Desktop \
+  --env=QT_QPA_PLATFORM=wayland
+
+echo "All packages and overrides applied successfully."
