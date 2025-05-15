@@ -16,6 +16,7 @@ sudo apt install -y \
   cliphist \
   curl \
   dunst \
+  flatpak \
   fonts-font-awesome \
   fonts-terminus \
   foot \
