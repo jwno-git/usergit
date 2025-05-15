@@ -14,6 +14,8 @@ alias hyp="Hyprland"
 source /root/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /root/.zsh/zsh-completions/zsh-completions.zsh
 
+fpath=(/root/.zsh/zsh-completions/src $fpath)
+
 fbset -g 2880 1800 2880 1800 32
 clear
 ff
