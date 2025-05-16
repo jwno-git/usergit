@@ -89,20 +89,20 @@ flatpak install -y flathub \
   org.standardnotes.standardnotes
 
 echo "=== Creating Flatpak menu entries ==="
-sudo ln -s /var/lib/flatpak/exports/share/applications/com.obsproject.Studio.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/net.cozic.joplin_desktop.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.kde.kdenlive.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.gnome.eog.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/com.bitwarden.desktop.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/com.saivert.pwvucontrol.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.mozilla.firefox.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.gimp.GIMP.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/net.ankiweb.Anki.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/io.mpv.Mpv.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.gnome.Calculator.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.standardnotes.standardnotes.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.libreoffice.LibreOffice.calc.desktop@ /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/org.libreoffice.LibreOffice.writer.desktop@ /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/com.obsproject.Studio.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/net.cozic.joplin_desktop.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.kde.kdenlive.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.gnome.eog.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/com.bitwarden.desktop.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/com.saivert.pwvucontrol.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.mozilla.firefox.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.gimp.GIMP.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/net.ankiweb.Anki.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/io.mpv.Mpv.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.gnome.Calculator.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.standardnotes.standardnotes.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.libreoffice.LibreOffice.calc.desktop /usr/share/applications/
+sudo ln -s /var/lib/flatpak/exports/share/applications/org.libreoffice.LibreOffice.writer.desktop /usr/share/applications/
 
 echo "=== Setting global Flatpak overrides ==="
 sudo flatpak override --filesystem=$HOME/.themes
