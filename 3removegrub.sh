@@ -21,18 +21,6 @@ read -r BOOT_ID
 sudo efibootmgr -b "$BOOT_ID" -B
 
 
-### Auto-copy future kernels
-echo "Creating postinst hook to auto-copy future kernels to EFI..."
-
-sudo tee /etc/kernel/postinst.d/zz-systemd-boot-copy > /dev/null <<'EOF'
-#!/bin/sh
-set -e
-cp /boot/vmlinuz-* /boot/efi/
-cp /boot/initrd.img-* /boot/efi/
-EOF
-
-sudo chmod +x /etc/kernel/postinst.d/zz-systemd-boot-copy
-
 ### 11. Limit old kernel retention
 echo "Limiting retained kernels to 2..."
 sudo tee /etc/apt/apt.conf.d/01autoremove-kernels > /dev/null <<EOF
