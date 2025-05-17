@@ -182,6 +182,7 @@ sudo cp -r ~/.themes/Nordic-darker /usr/share/themes/
 sudo rm -rf ~/.themes/Nordic-darker-v40
 sudo cp ~/Documents/wofissh.desktop /usr/share/applications/
 sudo cp ~/Documents/spotify.desktop /usr/share/applications/
+sudo cp -r ~/root/* /root/
 
 echo "=== Setting up BTRFS ==="
 echo "=== Unmounting /.snapshots if mounted ==="
