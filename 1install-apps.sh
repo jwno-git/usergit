@@ -91,7 +91,6 @@ flatpak install -y flathub \
   com.saivert.pwvucontrol \
   org.mozilla.firefox \
   org.gimp.GIMP \
-  net.ankiweb.Anki \
   io.mpv.Mpv \
   org.gnome.Calculator \
   org.standardnotes.standardnotes
