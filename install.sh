@@ -124,6 +124,68 @@ flatpak override com.obsproject.Studio --user \
   --talk-name=org.freedesktop.portal.Desktop \
   --env=QT_QPA_PLATFORM=wayland
 
+echo "=== Building Hypr Packages ==="
+
+mkdir ~/.src
+git clone https://github.com/zsh-users/zsh-completions ~/.zsh/zsh-completions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
+git clone https://github.com/hyprwm/hyprutils ~/.src/hyprutils
+git clone https://github.com/hyprwm/hyprlang ~/.src/hyprlang
+git clone https://github.com/hyprwm/hyprwayland-scanner ~/.src/hyprwayland-scanner
+git clone https://github.com/hyprwm/hyprgraphics ~/.src/hyprgraphics
+git clone https://github.com/hyprwm/hyprlock ~/.src/hyprlock
+git clone https://github.com/hyprwm/hyprpaper ~/.src/hyprpaper
+git clone https://github.com/hyprwm/hyprpicker ~/.src/hyprpicker
+
+cd ~/.src/hyprutils/
+cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr -S . -B ./build
+cmake --build ./build --config Release --target all -j`nproc 2>/dev/null || getconf NPROCESSORS_CONF`
+sudo cmake --install build
+
+echo "=== Built Hyprutils, on to Hyprlang ==="
+
+cd ~/.src/hyprlang/
+cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr -S . -B ./build
+cmake --build ./build --config Release --target hyprlang -j`nproc 2>/dev/null || getconf _NPROCESSORS_CONF`
+sudo cmake --install ./build
+
+echo "=== Built Hyprlang, on to Hyprwayland-scanner ==="
+
+cd ~/.src/hyprwayland-scanner/
+cmake -DCMAKE_INSTALL_PREFIX=/usr -B build
+cmake --build build -j `nproc`
+sudo cmake --install build
+
+echo "=== Built Hyprwayland-scanner, on to Hyprgraphics ==="
+
+cd ~/.src/hyprgraphics/
+cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr -S . -B ./build
+cmake --build ./build --config Release --target all -j`nproc 2>/dev/null || getconf NPROCESSORS_CONF`
+sudo cmake --install build
+
+echo "=== Built Hyprgraphics, on to Hyprlock ==="
+
+cd ~/.src/hyprlock/
+cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Release -S . -B ./build
+cmake --build ./build --config Release --target hyprlock -j`nproc 2>/dev/null || getconf _NPROCESSORS_CONF`
+sudo cmake --install build
+
+echo "=== Built Hyprlocks, on to Hyprpaper ==="
+
+cd ~/.src/hyprpaper/
+cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr -S . -B ./build
+cmake --build ./build --config Release --target hyprpaper -j`nproc 2>/dev/null || getconf _NPROCESSORS_CONF`
+sudo cmake --install ./build
+
+echo "=== Built Hyprpaper, on to Hyprpicker ==="
+
+cd ~/.src/hyprpicker/
+cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr -S . -B ./build
+cmake --build ./build --config Release --target hyprpicker -j`nproc 2>/dev/null || getconf _NPROCESSORS_CONF`
+sudo cmake --install ./build
+
+cd
+
 echo "All packages and overrides applied successfully."
 
 echo "=== Setting up Systemd-Boot ==="
@@ -149,7 +211,11 @@ sudo apt purge --allow-remove-essential -y \
   grub-efi-amd64-signed \
   grub-efi-amd64-unsigned \
   grub2-common \
-  shim-signed
+  shim-signed \
+  ifupdown \
+  nano \
+  os-prober \
+  zutty
 
 sudo apt autoremove --purge -y
 
