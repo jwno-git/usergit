@@ -93,7 +93,6 @@ flatpak install -y flathub \
   io.mpv.Mpv \
   org.gnome.Calculator \
   org.standardnotes.standardnotes \
-  com.discordapp.Discord
 
 echo "=== Creating Flatpak menu entries ==="
 sudo ln -s /var/lib/flatpak/exports/share/applications/com.obsproject.Studio.desktop /usr/share/applications/
