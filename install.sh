@@ -52,7 +52,6 @@ sudo apt install -y \
 
 echo "=== Installing APT dev packages (no recommends) ==="
 sudo apt install -y --no-install-recommends \
-  blueman \
   build-essential \
   cmake \
   g++ \
@@ -88,12 +87,12 @@ flatpak install -y flathub \
   org.libreoffice.LibreOffice \
   org.gnome.eog \
   com.bitwarden.desktop \
-  com.saivert.pwvucontrol \
   org.mozilla.firefox \
   org.gimp.GIMP \
   io.mpv.Mpv \
   org.gnome.Calculator \
-  org.standardnotes.standardnotes
+  org.standardnotes.standardnotes \
+  com.discordapp.Discord
 
 echo "=== Creating Flatpak menu entries ==="
 sudo ln -s /var/lib/flatpak/exports/share/applications/com.obsproject.Studio.desktop /usr/share/applications/
@@ -101,10 +100,8 @@ sudo ln -s /var/lib/flatpak/exports/share/applications/net.cozic.joplin_desktop.
 sudo ln -s /var/lib/flatpak/exports/share/applications/org.kde.kdenlive.desktop /usr/share/applications/
 sudo ln -s /var/lib/flatpak/exports/share/applications/org.gnome.eog.desktop /usr/share/applications/
 sudo ln -s /var/lib/flatpak/exports/share/applications/com.bitwarden.desktop.desktop /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/com.saivert.pwvucontrol.desktop /usr/share/applications/
 sudo ln -s /var/lib/flatpak/exports/share/applications/org.mozilla.firefox.desktop /usr/share/applications/
 sudo ln -s /var/lib/flatpak/exports/share/applications/org.gimp.GIMP.desktop /usr/share/applications/
-sudo ln -s /var/lib/flatpak/exports/share/applications/net.ankiweb.Anki.desktop /usr/share/applications/
 sudo ln -s /var/lib/flatpak/exports/share/applications/io.mpv.Mpv.desktop /usr/share/applications/
 sudo ln -s /var/lib/flatpak/exports/share/applications/org.gnome.Calculator.desktop /usr/share/applications/
 sudo ln -s /var/lib/flatpak/exports/share/applications/org.standardnotes.standardnotes.desktop /usr/share/applications/
@@ -128,3 +125,90 @@ flatpak override com.obsproject.Studio --user \
   --env=QT_QPA_PLATFORM=wayland
 
 echo "All packages and overrides applied successfully."
+
+echo "=== Setting up Systemd-Boot ==="
+echo "Getting UUID for /dev/nvme0n1p2..."
+UUID=$(blkid -s UUID -o value /dev/nvme0n1p2)
+echo "Found UUID: $UUID"
+
+### 2. Install systemd-boot and unattended-upgrades
+echo "Installing systemd-boot and unattended-upgrades..."
+sudo apt install -y systemd-boot systemd-boot-efi unattended-upgrades
+
+echo "Installing systemd-boot to EFI..."
+sudo bootctl --path=/boot/efi install
+
+echo "=== Removing Grub ==="
+echo "Ready to remove GRUB. Press enter to continue, or Ctrl+C to cancel."
+read
+
+sudo apt purge --allow-remove-essential -y \
+  grub-common \
+  grub-efi-amd64 \
+  grub-efi-amd64-bin \
+  grub-efi-amd64-signed \
+  grub-efi-amd64-unsigned \
+  grub2-common \
+  shim-signed
+
+sudo apt autoremove --purge -y
+
+echo "Current EFI Boot Entries:"
+sudo efibootmgr
+echo "Enter Boot ID of GRUB to delete (e.g. 0000):"
+read -r BOOT_ID
+sudo efibootmgr -b "$BOOT_ID" -B
+
+echo "Limiting retained kernels to 2..."
+sudo tee /etc/apt/apt.conf.d/01autoremove-kernels > /dev/null <<EOF
+APT::AutoRemove::Keep-Kernels "2";
+EOF
+
+echo "Conversion to systemd-boot complete."
+
+echo "=== Unpacking ==="
+tar -xf ~/.icons/BreezeX-RosePine-Linux.tar.xz
+tar -xf ~/.icons/Nordic-Folders.tar.xz
+tar -xf ~/.icons/rose-pine-hyprcursor.tar
+tar -xf ~/.themes/Nordic-darker.tar.xz
+
+echo "=== Cleaning Up ==="
+mv ~/.icons/BreezeX-RosePine-Linux ~/.icons/RosePine
+sudo cp -r ~/.icons/RosePine /usr/share/icons/
+sudo cp -r ~/.icons/rose-pine-hyprcursor /usr/share/icons/
+sudo cp -r ~/.icons/Nordic-Darker /usr/share/icons/
+sudo rm -rf ~/.icons/Nordic
+sudo cp -r ~/.themes/Nordic-darker /usr/share/themes/
+sudo rm -rf ~/.themes/Nordic-darker-v40
+sudo cp ~/Documents/wofissh.desktop /usr/share/applications/
+sudo cp ~/Documents/spotify.desktop /usr/share/applications/
+
+echo "=== Setting up BTRFS ==="
+echo "=== Unmounting /.snapshots if mounted ==="
+sudo umount /.snapshots 2>/dev/null || echo "Already unmounted or not mounted."
+
+echo "=== Deleting old /.snapshots directory ==="
+sudo rm -rf /.snapshots
+
+echo "=== Creating Snapper config for root ==="
+sudo snapper -c root create-config /
+
+echo "=== Deleting existing Btrfs subvolume at /.snapshots ==="
+sudo btrfs subvolume delete /.snapshots 2>/dev/null || echo "No subvolume to delete."
+
+echo "=== Recreating /.snapshots directory ==="
+sudo mkdir /.snapshots
+
+echo "=== Remounting all entries in /etc/fstab ==="
+sudo mount -a
+
+echo "=== Setting permissions and snapshot properties ==="
+sudo chmod 750 /.snapshots
+sudo btrfs property set -ts /.snapshots ro false
+
+echo "=== Press Enter to edit Snapper Config ==="
+read
+
+echo "=== Opening Snapper config in Vim ==="
+sudo nvim /etc/snapper/configs/root
+
