@@ -5,9 +5,9 @@
 [profiles]
   [[default]]
     icon_bell = False
-    background_darkness = 0.7
+    background_darkness = 0.8
     background_type = image
-    background_image = /$HOME/Pictures/Wallpapers/wallpaper-grid.jpg
+    background_image = /$HOME/Pictures/Wallpapers/wallpaper-term.jpg
     cursor_shape = underline
     font = Terminus (TTF) Medium 12
     show_titlebar = False
