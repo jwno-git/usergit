@@ -2,14 +2,21 @@
 
 set -e
 
+echo "=== Adding Repo's==="
+curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+echo "deb https://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
 echo "=== Updating APT package list ==="
 sudo apt update
 
 echo "=== Installing APT packages ==="
 sudo apt install -y \
   android-sdk-platform-tools \
+  bluez \
+  blueman \
   brightnessctl \
   btop \
+  cava \
   chafa \
   cliphist \
   curl \
@@ -23,13 +30,14 @@ sudo apt install -y \
   lxpolkit \
   network-manager-applet \
   openssh-client \
-  pipewire \
-  pipewire-alsa \
-  pipewire-pulse \
+  pavucontrol \
+  pulseaudio \ 
+  pulseaudio-module-bluetooth \
   psmisc \
   python3-pip \
   slurp \
   snapper \
+  spotify-client \
   swappy \
   tar \
   terminator \
