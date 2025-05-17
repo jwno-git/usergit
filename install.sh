@@ -124,7 +124,7 @@ flatpak override com.obsproject.Studio --user \
 
 echo "=== Building Hypr Packages ==="
 
-mkdir ~/.src
+mkdir -p /$HOME/.src
 git clone https://github.com/zsh-users/zsh-completions ~/.zsh/zsh-completions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
 git clone https://github.com/hyprwm/hyprutils ~/.src/hyprutils
