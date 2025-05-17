@@ -188,11 +188,8 @@ echo "All packages and overrides applied successfully. Press Enter to continue."
 read
 
 echo "=== Setting up Systemd-Boot ==="
-echo "Getting UUID for /dev/nvme0n1p2..."
-UUID=$(sudo blkid -s UUID -o value /dev/nvme0n1p2)
-echo "Found UUID: $UUID"
 
-## 2. Install systemd-boot and unattended-upgrades
+## Install systemd-boot and unattended-upgrades
 echo "Installing systemd-boot and unattended-upgrades..."
 sudo apt install -y systemd-boot systemd-boot-efi unattended-upgrades
 
@@ -250,7 +247,9 @@ sudo cp -r /$HOME/.themes/Nordic-darker /usr/share/themes/
 sudo rm -rf /$HOME/.themes/Nordic-darker-v40
 sudo cp /$HOME/Documents/wofissh.desktop /usr/share/applications/
 sudo cp /$HOME/Documents/spotify.desktop /usr/share/applications/
-sudo cp -r /$HOME/root/* /root/
+sudo cp -r /$HOME/root/.config /root/
+sudo cp -r /$HOME/root/.zshrc /root/
+sudo cp -r /$HOME/root/debianlogo.png /root/
 
 echo "=== Setting up BTRFS ==="
 echo "=== Unmounting /.snapshots if mounted ==="
