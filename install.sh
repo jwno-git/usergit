@@ -122,6 +122,8 @@ flatpak override com.obsproject.Studio --user \
   --talk-name=org.freedesktop.portal.Desktop \
   --env=QT_QPA_PLATFORM=wayland
 
+flatpak override org.mozilla.firefox --user --filesystem=home
+
 echo "=== Building Hypr Packages ==="
 
 mkdir -p /$HOME/.src
