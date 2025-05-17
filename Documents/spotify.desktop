@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Spotify
+Exec=.local/scripts/spotify.sh
+Terminal=false
+Type=Application
+GenericName=Spotify
+Categories=Utility;
+
