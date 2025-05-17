@@ -26,6 +26,7 @@ sudo apt install -y \
   foot \
   grim \
   hyprland \
+  imagemagick \
   lf \
   lxpolkit \
   network-manager-applet \
